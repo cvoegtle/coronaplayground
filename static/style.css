@@ -1,0 +1,11 @@
+.error {
+    color: red;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.cv_footer {
+    font-size: smaller;
+}

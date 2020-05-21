@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <title>Corona Daten</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.8.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+</head>
+<body>
+<h2>Tägliche Infektions- und Meldedaten</h2>
+<div id="infections"></div>
+<h2>Reproduktionsrate</h2>
+<div id="reproduction_rate"></div>
+
+<hr class="cv_footer">
+<span class="cv_footer">Daten vom {{ data.last_date}} - <a href="mailto:christian@voegtle.org">Kontakt</a> </span>
+
+<script>
+  (function(vegaEmbed) {
+    var spec_infections = {{ corona_charts['infections'] }} ;
+    var spec_reproduction_rate = {{ corona_charts['reproduction_rate'] }} ;
+    var embedOpt = {"mode": "vega-lite"};
+
+    function showError(el, error){
+      el.innerHTML = ('<div class="error" style="color:red;">'
+        + '<p>JavaScript Error: ' + error.message + '</p>'
+        + "<p>This usually means there's a typo in your chart specification. "
+        + "See the javascript console for the full traceback.</p>"
+        + '</div>');
+      throw error;
+    }
+    const el_infections = document.getElementById('infections');
+    vegaEmbed("#infections", spec_infections, embedOpt)
+      .catch(error => showError(el_infections, error));
+    const el_reproduction_rate = document.getElementById('reproduction_rate');
+    vegaEmbed("#reproduction_rate", spec_reproduction_rate, embedOpt)
+      .catch(error => showError(el_reproduction_rate, error));
+  })(vegaEmbed);
+
+</script>
+
+</body>
+</html>
