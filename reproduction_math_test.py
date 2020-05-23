@@ -30,7 +30,7 @@ class ReproductionRateTestCase(unittest.TestCase):
 
 
     def provide_data(self):
-        data = pd.read_csv("static/rki_latest.csv", header=0, names=["day", "infections", "reports"])
+        data = pd.read_csv("static/rki_test.csv", header=0, names=["day", "infections", "reports"])
         data["day"] = [dt.datetime.strptime(d + ' 2020', "%b %d %Y") for d in data["day"]]
         data = data.assign(total=lambda x: x["infections"] + x["reports"])
         data = data.assign(four_day_average=[four_days_average(data['total'], index) for index in range(len(data['total']))])
