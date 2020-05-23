@@ -3,7 +3,7 @@ import datetime as dt
 
 from google.cloud import datastore
 
-from flask import Flask, render_template, Markup, request
+from flask import Flask, render_template, Markup, request, redirect
 import pandas as pd
 
 from reproduction_math import reproduction_rate
@@ -28,22 +28,24 @@ def root():
                      'reproduction_rate': Markup(reproduction_rate_chart(values))}
     return render_template('index.html', corona_charts=corona_charts, data=data)
 
+
 @app.route('/upload', methods=("GET", "POST"))
 def upload():
-    if request.method == "POST":
+    if request.method == "POST" and request.form["snippet"] is not None:
         process(request.form["snippet"])
+        return redirect('/')
+    else:
+        data = {
+            'last_date': last_date_readable(provide_latest())
+        }
+        return render_template('upload.html', data=data)
 
-    values = provide_latest()
-
-    data = {
-        'last_date': last_date_readable(values)
-    }
-    return render_template('upload.html', data=data)
 
 def process(snippet):
     parser = RkiParser(snippet)
     csv = parser.daily_cases_as_csv()
     save_latest(csv)
+
 
 def provide_latest():
     csv = read_latest()
@@ -54,9 +56,11 @@ def provide_latest():
     data = data.assign(reproduction_rate=[reproduction_rate(data['four_day_average'], index) for index in range(len(data['four_day_average']))])
     return data
 
+
 def last_date_readable(data):
     last_date = data['day'][len(data['day']) - 1]
     return last_date.strftime("%d.%m.%y")
+
 
 def save_latest(csv):
     with datastore_client.transaction():
@@ -67,6 +71,7 @@ def save_latest(csv):
         })
 
         datastore_client.put(entity)
+
 
 def read_latest():
     query = datastore_client.query(kind='corona')

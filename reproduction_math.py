@@ -8,6 +8,7 @@ def reproduction_rate(values, index):
     else:
         return None
 
+
 def four_days_average(values, index):
     if index >= 3:
         return sum(values[index-3:index+1])/4
