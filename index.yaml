@@ -1,0 +1,7 @@
+indexes:
+
+- kind: corona
+  ancestor: yes
+  properties:
+  - name: timestamp
+    direction: desc

@@ -6,6 +6,16 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+.upload_box {
+    width: 100%;
+    height: 300px;
+}
+
+.button {
+    font-size: medium;
+    padding: 5px;
+}
+
 .cv_footer {
     font-size: smaller;
 }

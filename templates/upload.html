@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+  <title>Corona Daten</title>
+<!--  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet"> -->
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h2>Snippet hochladen</h2>
+<form method="post">
+  <textarea name="snippet" id="snippet" class="upload_box" >{{ request.form['snippet'] }}</textarea>
+  <input type="submit" value="hochladen" class="button">
+</form>
+<hr class="cv_footer">
+<span class="cv_footer">Daten vom {{ data.last_date}} - <a href="mailto:christian@voegtle.org">Kontakt</a> </span>
+</body>
+</html>
