@@ -62,7 +62,7 @@ def infection_chart(data):
                              average_text,
                              infection_points,
                              infection_text,
-                             rule).properties(width=850, height=400))
+                             rule).properties(width=1050, height=400))
 
 
 def reproduction_rate_chart(data):
@@ -93,7 +93,7 @@ def reproduction_rate_chart(data):
                                 reproduction_selectors,
                                 reproduction_points,
                                 rule,
-                                reproduction_text).properties(width=850, height=400)
+                                reproduction_text).properties(width=1050, height=400)
     return to_json(combinded_chart)
 
 
