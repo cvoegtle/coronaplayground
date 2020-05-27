@@ -64,7 +64,7 @@ def last_date_readable(data):
 
 def save_latest(csv):
     with datastore_client.transaction():
-        entity = datastore.Entity(key=datastore_client.key('corona'))
+        entity = datastore.Entity(key=datastore_client.key('corona'), exclude_from_indexes=['csv'])
         entity.update({
             'timestamp': dt.datetime.now(),
             'csv': csv
@@ -78,7 +78,6 @@ def read_latest():
     query.order = ['-timestamp']
 
     corona_data = list(query.fetch(limit=1))
-
     return corona_data[0]['csv']
 
 
