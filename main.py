@@ -11,9 +11,16 @@ from reproduction_math import four_days_average
 from rki_parser import RkiParser
 from charts import infection_chart, reproduction_rate_chart
 
+
 datastore_client = datastore.Client()
 
 app = Flask(__name__)
+
+
+# Aufwärmanfragen der App Engine annehmen und positiv beantworten, damit immer eine aktive Instanz vorhanden ist
+@app.route('/_ah/warmup')
+def warmup():
+    return '', 200, {}
 
 
 @app.route('/')
