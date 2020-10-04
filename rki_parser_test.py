@@ -5,7 +5,7 @@ class RkiParserTestCase(unittest.TestCase):
     def test_parse_october(self):
         parser = RkiParser(read_svg_data())
         daily_cases = parser.daily_cases_as_csv()
-        self.assertEqual(True, False)
+        self.assertEqual(3750, len(daily_cases))
 
 
 def read_svg_data():
