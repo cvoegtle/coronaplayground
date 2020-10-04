@@ -1,5 +1,6 @@
 import io
 import datetime as dt
+import logging as log
 
 from google.cloud import datastore
 
@@ -13,7 +14,6 @@ from charts import infection_chart, reproduction_rate_chart
 
 
 datastore_client = datastore.Client()
-
 app = Flask(__name__)
 
 
@@ -25,7 +25,6 @@ def warmup():
 
 @app.route('/')
 def root():
-    write_test()
     values = provide_latest()
 
     data = {
@@ -72,7 +71,7 @@ def last_date_readable(data):
 
 def save_latest(csv):
     with datastore_client.transaction():
-        entity = datastore.Entity(key=datastore_client.key('corona'), exclude_from_indexes=tuple['csv'])
+        entity = datastore.Entity(key=datastore_client.key('corona'), exclude_from_indexes=['csv'])
         entity.update({
             'timestamp': dt.datetime.now(),
             'csv': csv
@@ -87,11 +86,6 @@ def read_latest():
 
     corona_data = list(query.fetch(limit=1))
     return corona_data[0]['csv']
-
-def write_test():
-    with open('static/rki_test.csv') as testfile:
-        testcsv = testfile.read()
-        save_latest(testcsv)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
