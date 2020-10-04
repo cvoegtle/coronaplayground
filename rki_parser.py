@@ -7,6 +7,13 @@ class RkiParser:
     def __init__(self, snippet):
         self.soup = BeautifulSoup(snippet, 'html.parser')
 
+    def daily_cases_as_csv(self):
+        csv = 'date, infections, reports\n'
+        daily_cases = self.extract_daily_cases()
+        for case in daily_cases:
+            csv += case['date'] + ', ' + case.get('infections', '0') + ', ' + case.get('reports', '0') + '\n'
+        return csv
+
     def extract_daily_cases(self):
         chart_elements = self.soup.find_all('g', attrs={"aria-label": lambda AL: AL and AL.startswith("Erkrankungsdatum")})
         chart_data = [split('infections', element['aria-label']) for element in chart_elements]
@@ -22,13 +29,6 @@ class RkiParser:
 
         return chart_data
 
-    def daily_cases_as_csv(self):
-        csv = 'date, infections, reports\n'
-        daily_cases = self.extract_daily_cases()
-        for case in daily_cases:
-            csv += case['date'] + ', ' + case.get('infections', '0') + ', ' + case.get('reports', '0') + '\n'
-        return csv
-
 
 def split(identifier, label):
     part = label.split()
@@ -39,7 +39,7 @@ def split(identifier, label):
 
 
 def english_date(date):
-    return date.replace('Mär', 'Mar').replace('Mai', 'May')
+    return date.replace('Mär', 'Mar').replace('Mai', 'May').replace('Okt', 'Oct').replace('Dez', 'Dec')
 
 
 def plain_number(value):
